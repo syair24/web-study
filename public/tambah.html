@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Kanji</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="form-body">
+    <main class="form-page">
+      <h1>Tambah Kanji Baru</h1>
+      <form class="kanji-form" id="kanjiForm">
+        <label>
+          Kanji:
+          <input type="text" name="kanji" required />
+        </label>
+        <label>
+          Bacaan:
+          <input type="text" name="reading" required />
+        </label>
+        <label>
+          Arti:
+          <input type="text" name="meaning" required />
+        </label>
+        <div class="form-buttons">
+          <button type="submit">Submit</button>
+          <a href="index.html" class="cancel-button">Cancel</a>
+        </div>
+      </form>
+
+      <!-- Notifikasi custom -->
+      <div id="customAlert" class="custom-alert hidden">
+        <span>✅ Data berhasil disimpan!</span>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById("kanjiForm");
+      const alertBox = document.getElementById("customAlert");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData);
+
+        fetch("/submit-kanji", {
+          method: "POST",
+          body: data,
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error("Gagal simpan");
+
+            // Tampilkan notifikasi
+            alertBox.classList.remove("hidden");
+            alertBox.querySelector("span").textContent =
+              "✅ Data berhasil disimpan!";
+
+            // Kosongkan form
+            form.reset();
+
+            // Sembunyikan notifikasi setelah 3 detik
+            setTimeout(() => {
+              alertBox.classList.add("hidden");
+            }, 3000);
+          })
+          .catch((err) => {
+            console.error(err);
+            alertBox.classList.remove("hidden");
+            alertBox.querySelector("span").textContent =
+              "❌ Gagal menyimpan data";
+            setTimeout(() => {
+              alertBox.classList.add("hidden");
+            }, 3000);
+          });
+      });
+    </script>
+  </body>
+</html>
