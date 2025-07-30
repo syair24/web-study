@@ -2,7 +2,10 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>Tambah Kanji</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -34,46 +37,7 @@
       </div>
     </main>
 
-    <script>
-      const form = document.getElementById("kanjiForm");
-      const alertBox = document.getElementById("customAlert");
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-        const data = new URLSearchParams(formData);
-
-        fetch("/submit-kanji", {
-          method: "POST",
-          body: data,
-        })
-          .then((res) => {
-            if (!res.ok) throw new Error("Gagal simpan");
-
-            // Tampilkan notifikasi
-            alertBox.classList.remove("hidden");
-            alertBox.querySelector("span").textContent =
-              "✅ Data berhasil disimpan!";
-
-            // Kosongkan form
-            form.reset();
-
-            // Sembunyikan notifikasi setelah 3 detik
-            setTimeout(() => {
-              alertBox.classList.add("hidden");
-            }, 3000);
-          })
-          .catch((err) => {
-            console.error(err);
-            alertBox.classList.remove("hidden");
-            alertBox.querySelector("span").textContent =
-              "❌ Gagal menyimpan data";
-            setTimeout(() => {
-              alertBox.classList.add("hidden");
-            }, 3000);
-          });
-      });
-    </script>
+    <!-- JavaScript terpisah -->
+    <script src="main.js"></script>
   </body>
 </html>
