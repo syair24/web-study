@@ -2,28 +2,25 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <title>Tambah Kanji</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Kanji Baru</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="form-body">
     <main class="form-page">
       <h1>Tambah Kanji Baru</h1>
-      <form class="kanji-form" id="kanjiForm">
+      <form class="kanji-form" id="kanjiForm" method="POST">
         <label>
           Kanji:
-          <input type="text" name="kanji" required />
+          <input type="text" name="kanji" id="kanjiInput" required />
         </label>
         <label>
           Bacaan:
-          <input type="text" name="reading" required />
+          <input type="text" name="reading" id="readingInput" required />
         </label>
         <label>
           Arti:
-          <input type="text" name="meaning" required />
+          <input type="text" name="meaning" id="meaningInput" required />
         </label>
         <div class="form-buttons">
           <button type="submit">Submit</button>
@@ -36,8 +33,6 @@
         <span>✅ Data berhasil disimpan!</span>
       </div>
     </main>
-
-    <!-- JavaScript terpisah -->
     <script src="main.js"></script>
   </body>
 </html>
