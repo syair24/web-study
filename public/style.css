@@ -355,7 +355,7 @@ body.form-body {
   /* === MAIN CONTENT === */
   .main-content {
     padding: 0.5rem 1rem 0.5rem 1rem;
-    margin-left: 0;
+    margin-left: 0; /* hapus ruang jika sidebar tertutup */
   }
 
   /* ===================================== */

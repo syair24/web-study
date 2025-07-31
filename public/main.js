@@ -14,25 +14,29 @@ if (menuBtn && closeBtn && sidebar) {
 }
 
 // ======== Tooltip Logic ========
-document.querySelectorAll(".card-options i").forEach((icon) => {
-  icon.addEventListener("click", function (e) {
-    const tooltip = this.nextElementSibling;
-    tooltip.style.display = tooltip.style.display === "flex" ? "none" : "flex";
+function bindTooltipListeners() {
+  document.querySelectorAll(".card-options i").forEach((icon) => {
+    icon.addEventListener("click", function (e) {
+      const tooltip = this.nextElementSibling;
+      tooltip.style.display =
+        tooltip.style.display === "flex" ? "none" : "flex";
 
-    // Tutup tooltip lain
-    document.querySelectorAll(".card-tooltip").forEach((other) => {
-      if (other !== tooltip) other.style.display = "none";
-    });
+      document.querySelectorAll(".card-tooltip").forEach((other) => {
+        if (other !== tooltip) other.style.display = "none";
+      });
 
-    // Klik luar -> tutup
-    document.addEventListener("click", function outsideClick(ev) {
-      if (!tooltip.contains(ev.target) && ev.target !== icon) {
-        tooltip.style.display = "none";
-        document.removeEventListener("click", outsideClick);
-      }
+      document.addEventListener("click", function outsideClick(ev) {
+        if (!tooltip.contains(ev.target) && ev.target !== icon) {
+          tooltip.style.display = "none";
+          document.removeEventListener("click", outsideClick);
+        }
+      });
     });
   });
-});
+}
+
+// Jalankan tooltip listener awal (untuk card statis kalau ada)
+bindTooltipListeners();
 
 /* ===================================== */
 /*  Form Submit Logic style tambah.html  */
@@ -74,3 +78,42 @@ if (form && alertBox) {
       });
   });
 }
+
+// ===============================
+// Fetch dan render data dari API
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const mainContent = document.querySelector(".main-content");
+
+  if (!mainContent) return;
+
+  fetch("/api/kanji")
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "card-horizontal";
+        card.innerHTML = `
+          <div class="card-options">
+            <i class="ph ph-dots-three-outline-vertical"></i>
+            <div class="card-tooltip">
+              <button><i class="ph ph-pencil-simple"></i> Edit</button>
+              <button><i class="ph ph-trash"></i> Delete</button>
+            </div>
+          </div>
+          <div class="card-content">
+            <h2>${item.kanji}</h2>
+            <p class="main-text">${item.bacaan}</p>
+            <p class="sub-text">${item.arti}</p>
+          </div>
+        `;
+        mainContent.appendChild(card);
+      });
+
+      // Aktifkan tooltip untuk card yang baru ditambahkan
+      bindTooltipListeners();
+    })
+    .catch((err) => {
+      console.error("Gagal mengambil data kartu:", err);
+    });
+});
