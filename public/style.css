@@ -11,10 +11,12 @@ html {
 
 /* === BODY === */
 body {
+  display: flex;
   font-family: sans-serif;
   background: #f5f5f5;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding-top: 60px;
+  overflow: hidden; /* cegah scroll di body */
 }
 
 /* === TOPBAR === */
@@ -139,14 +141,12 @@ body {
 
 /* === MAIN CONTENT === */
 .main-content {
-  position: absolute;
-  top: 60px;
-  left: 0px;
-  right: 0;
-  bottom: 0;
-  padding: 1rem 2rem 1rem 2rem;
+  margin-left: 250px; /* beri space untuk sidebar desktop */
+  padding: 1rem 2rem;
   overflow-y: auto;
+  height: calc(100dvh - 60px); /* viewport height dikurangi tinggi topbar */
   background-color: #c4c4c4;
+  flex: 1; /* biar ambil sisa ruang */
 }
 
 /* card */
@@ -355,6 +355,7 @@ body.form-body {
   /* === MAIN CONTENT === */
   .main-content {
     padding: 0.5rem 1rem 0.5rem 1rem;
+    margin-left: 0;
   }
 
   /* ===================================== */
