@@ -14,29 +14,55 @@ if (menuBtn && closeBtn && sidebar) {
 }
 
 // ======== Tooltip Logic ========
-function bindTooltipListeners() {
-  document.querySelectorAll(".card-options i").forEach((icon) => {
-    icon.addEventListener("click", function (e) {
-      const tooltip = this.nextElementSibling;
-      tooltip.style.display =
-        tooltip.style.display === "flex" ? "none" : "flex";
+document.querySelectorAll(".card-options i").forEach((icon) => {
+  icon.addEventListener("click", function (e) {
+    const tooltip = this.nextElementSibling;
+    tooltip.style.display = tooltip.style.display === "flex" ? "none" : "flex";
 
-      document.querySelectorAll(".card-tooltip").forEach((other) => {
-        if (other !== tooltip) other.style.display = "none";
-      });
+    // Tutup tooltip lain
+    document.querySelectorAll(".card-tooltip").forEach((other) => {
+      if (other !== tooltip) other.style.display = "none";
+    });
 
-      document.addEventListener("click", function outsideClick(ev) {
-        if (!tooltip.contains(ev.target) && ev.target !== icon) {
-          tooltip.style.display = "none";
-          document.removeEventListener("click", outsideClick);
-        }
-      });
+    // Klik luar -> tutup
+    document.addEventListener("click", function outsideClick(ev) {
+      if (!tooltip.contains(ev.target) && ev.target !== icon) {
+        tooltip.style.display = "none";
+        document.removeEventListener("click", outsideClick);
+      }
     });
   });
-}
+});
 
-// Jalankan tooltip listener awal (untuk card statis kalau ada)
-bindTooltipListeners();
+// ======== Delete Confirm Logic ========
+const deleteConfirm = document.getElementById("deleteConfirm");
+const confirmBtn = document.getElementById("confirmDeleteBtn");
+const cancelBtn = document.getElementById("cancelDeleteBtn");
+
+let cardToDelete = null;
+
+document.querySelectorAll(".card-tooltip button").forEach((btn) => {
+  if (btn.textContent.includes("Delete")) {
+    btn.addEventListener("click", function () {
+      const card = this.closest(".card-horizontal");
+      cardToDelete = card;
+      deleteConfirm.style.display = "flex";
+    });
+  }
+});
+
+confirmBtn.addEventListener("click", () => {
+  if (cardToDelete) {
+    cardToDelete.remove();
+    cardToDelete = null;
+  }
+  deleteConfirm.style.display = "none";
+});
+
+cancelBtn.addEventListener("click", () => {
+  cardToDelete = null;
+  deleteConfirm.style.display = "none";
+});
 
 /* ===================================== */
 /*  Form Submit Logic style tambah.html  */
@@ -78,42 +104,3 @@ if (form && alertBox) {
       });
   });
 }
-
-// ===============================
-// Fetch dan render data dari API
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-  const mainContent = document.querySelector(".main-content");
-
-  if (!mainContent) return;
-
-  fetch("/api/kanji")
-    .then((res) => res.json())
-    .then((data) => {
-      data.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "card-horizontal";
-        card.innerHTML = `
-          <div class="card-options">
-            <i class="ph ph-dots-three-outline-vertical"></i>
-            <div class="card-tooltip">
-              <button><i class="ph ph-pencil-simple"></i> Edit</button>
-              <button><i class="ph ph-trash"></i> Delete</button>
-            </div>
-          </div>
-          <div class="card-content">
-            <h2>${item.kanji}</h2>
-            <p class="main-text">${item.bacaan}</p>
-            <p class="sub-text">${item.arti}</p>
-          </div>
-        `;
-        mainContent.appendChild(card);
-      });
-
-      // Aktifkan tooltip untuk card yang baru ditambahkan
-      bindTooltipListeners();
-    })
-    .catch((err) => {
-      console.error("Gagal mengambil data kartu:", err);
-    });
-});

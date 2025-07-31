@@ -325,6 +325,52 @@ body.form-body {
   display: none;
 }
 
+/* ==== DELETE CONFIRM OVERLAY ==== */
+.delete-confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none; /* tampilkan dengan JS */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-box {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.delete-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.delete-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#confirmDeleteBtn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+#cancelDeleteBtn {
+  background-color: #bdc3c7;
+  color: black;
+}
+
 /* === RESPONSIVE: MOBILE === */
 @media (max-width: 768px) {
   .topbar .title {
